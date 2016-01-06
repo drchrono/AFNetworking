@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "AFJSONRequestOperation.h"
-
+#import "drchrono_EHR-Swift.h"
 static dispatch_queue_t json_request_operation_processing_queue() {
     static dispatch_queue_t af_json_request_operation_processing_queue;
     static dispatch_once_t onceToken;
@@ -48,6 +48,8 @@ static dispatch_queue_t json_request_operation_processing_queue() {
 										success:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON))success
 										failure:(void (^)(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON))failure
 {
+    NSLog(@"%@", urlRequest.cURLString);
+
     AFJSONRequestOperation *requestOperation = [(AFJSONRequestOperation *)[self alloc] initWithRequest:urlRequest];
     [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
