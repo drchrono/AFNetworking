@@ -24,6 +24,7 @@
 
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
+#import "NetworkingConstants.h"
 
 #import <Availability.h>
 
@@ -187,6 +188,8 @@ NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value) {
 #pragma mark -
 
 @interface AFHTTPClient ()
+@property (copy, nonatomic) NSString *appVersion;
+@property (copy, nonatomic) NSString *appBuildNumber;
 @property (readwrite, nonatomic, strong) NSURL *baseURL;
 @property (readwrite, nonatomic, strong) NSMutableArray *registeredHTTPOperationClassNames;
 @property (readwrite, nonatomic, strong) NSMutableDictionary *defaultHeaders;
@@ -241,6 +244,12 @@ NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value) {
         url = [url URLByAppendingPathComponent:@""];
     }
 
+    NSDictionary *bundleDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *appVersion = [bundleDictionary objectForKey:@"CFBundleShortVersionString"];
+    NSString *appBuildNumber = [bundleDictionary objectForKey:@"CFBundleVersion"];
+    self.appVersion = appVersion;
+    self.appBuildNumber = appBuildNumber;
+
     self.baseURL = url;
 
     self.stringEncoding = NSUTF8StringEncoding;
@@ -258,6 +267,8 @@ NSArray * AFQueryStringPairsFromKeyAndValue(NSString *key, id value) {
         *stop = q <= 0.5f;
     }];
     [self setDefaultHeader:@"Accept-Language" value:[acceptLanguagesComponents componentsJoinedByString:@", "]];
+    [self setDefaultHeader:kAppVersion value:self.appVersion];
+    [self setDefaultHeader:kAppBuildNumber value:self.appBuildNumber];
 
     NSString *userAgent = nil;
 #pragma clang diagnostic push
