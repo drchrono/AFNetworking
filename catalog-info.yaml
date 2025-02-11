@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: AFNetworking
+  description: A delightful iOS and OS X networking framework
+  annotations:
+    business-unit: EverHealth
+    github.com/project-slug: drchrono/AFNetworking
+    product: DRC
+spec:
+  type: service
+  lifecycle: production
+  owner: EverHealth
+  implementation:
+    languages:
+    - Objective-C
+    - Ruby
